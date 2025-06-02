@@ -60,32 +60,52 @@ class TornaguiaController extends Controller{
             ->with('driver')
             ->find($id);
     }
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $request->validate([
-//            'fecha'=>'required',
-//            'numero'=>'required',
-//            'yacimiento'=>'required',
-//            'tranca'=>'required',
-//            'cuadrilla'=>'required',
-//            'tipoMaterial'=>'required',
-            'minerales'=>'required',
-//            'peso'=>'required',
-//            'sacos'=>'required',
-//            'transporte_id'=>'required',
-//            'empresa_id'=>'required',
-//            'contratista_id'=>'required',
-//            'user_id'=>'required',
-//            'driver_id'=>'required',
+            'fecha' => 'required|date',
+            'hora' => 'required',
+            'departamento' => 'required|string|max:100',
+            'centroMinero' => 'nullable|string|max:100',
+            'yacimiento' => 'required|string|max:255',
+            'tranca' => 'nullable|string|max:255',
+            'trancaSalida' => 'nullable|string|max:255',
+            'cuadrilla' => 'nullable|string|max:255',
+            'tipoMaterial' => 'required|string|max:100',
+            'minerales' => 'required|string',
+            'peso' => 'nullable|numeric',
+            'sacos' => 'nullable|integer',
+            'cantidad' => 'nullable|integer',
+            'lote' => 'nullable|string|max:100',
+            'broza' => 'nullable|string|max:255',
+            'nit' => 'nullable|string|max:100',
+            'comprador' => 'nullable|string|max:255',
+            'destino' => 'nullable|string|max:255',
+            'empresa_id' => 'required|exists:empresas,id',
+            'contratista_id' => 'required|exists:contratistas,id',
+            'transporte_id' => 'required|exists:transportes,id',
+            'driver_id' => 'required|exists:drivers,id',
+            'user_id' => 'required|exists:users,id',
         ]);
-        $request->merge(['hora' => date('H:i:s', strtotime($request->hora))]);
-        $tornaguia= Tornaguia::create($request->all());
-        return Tornaguia::with('transporte')
-            ->with('empresa')
-            ->with('contratista')
-            ->with('user')
-            ->with('driver')
-            ->find($tornaguia->id);
+
+        // Asegurar formato correcto de hora
+        $request->merge([
+            'hora' => date('H:i:s', strtotime($request->hora))
+        ]);
+
+        // Crear la tornaguía
+        $tornaguia = Tornaguia::create($request->all());
+
+        // Devolver con relaciones cargadas
+        return Tornaguia::with([
+            'transporte',
+            'empresa',
+            'contratista',
+            'user',
+            'driver'
+        ])->find($tornaguia->id);
     }
+
     public function update(Request $request,$id){
         $tornaguia = Tornaguia::findOrFail($id);
         $tornaguia->update($request->all());

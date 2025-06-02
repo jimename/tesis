@@ -208,105 +208,138 @@
           <div class="text-h6">{{ tornaguiaCrear ? 'Generacion de' : 'Modificar' }} Tornaguia o Cartaporte</div>
         </q-card-section>
 
-        <q-form @submit.prevent="tornaguiaCrear ? tornaguiaCreate : tornaguiaUpdate">
-          <q-card>
-            <q-card-section class="q-pa-xs">
+        <q-card>
+          <q-card-section class="q-pa-xs">
+            <q-form @submit.prevent="submitForm">
               <div class="row q-col-gutter-sm">
-
                 <div class="col-12 col-md-2">
-                  <q-input v-model="tornaguia.fecha" type="date" label="Fecha" outlined dense />
-                </div>
-
-                <div class="col-12 col-md-2">
-                  <q-input v-model="tornaguia.hora" type="time" label="Hora" outlined dense />
+                  <q-input v-model="tornaguia.fecha" type="date" label="Fecha" outlined dense/>
                 </div>
 
                 <div class="col-12 col-md-2">
-                  <q-select v-model="tornaguia.departamento" :options="['Oruro', 'La Paz', 'Cochabamba', 'Santa Cruz', 'Potosi', 'Tarija', 'Chuquisaca', 'Beni', 'Pando']" label="Departamento" outlined dense />
+                  <q-input v-model="tornaguia.hora" type="time" label="Hora" outlined dense/>
                 </div>
 
                 <div class="col-12 col-md-2">
-                  <q-input v-model="tornaguia.centroMinero" label="Centro Minero" outlined dense />
+                  <q-select v-model="tornaguia.departamento"
+                            :options="['Oruro', 'La Paz', 'Cochabamba', 'Santa Cruz', 'Potosi', 'Tarija', 'Chuquisaca', 'Beni', 'Pando']"
+                            label="Departamento" outlined dense/>
                 </div>
 
                 <div class="col-12 col-md-2">
-                  <q-input v-model="tornaguia.yacimiento" label="Yacimiento" outlined dense />
+                  <q-input v-model="tornaguia.centroMinero" label="Centro Minero" outlined dense/>
                 </div>
 
                 <div class="col-12 col-md-2">
-                  <q-input v-model="tornaguia.trancaSalida" label="Tranca Salida" outlined dense />
+                  <q-input v-model="tornaguia.yacimiento" label="Yacimiento" outlined dense/>
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <q-input v-model="tornaguia.trancaSalida" label="Tranca Salida" outlined dense/>
                 </div>
 
                 <div class="col-12 col-md-3">
-                  <q-select v-model="tornaguia.empresas" :options="empresas" label="Empresa Destino" outlined dense />
+<!--                  <q-select v-model="tornaguia.empresas" :options="empresas" label="Empresa Destino" outlined dense/>-->
+                  <q-select v-model="tornaguia.empresa_id"
+                            :options="empresas"
+                            option-label="label"
+                            option-value="value"
+                            map-options
+                            emit-value
+                            label="Empresa Destino"
+                            outlined dense />
                 </div>
 
                 <div class="col-12 col-md-3">
-                  <q-select v-model="tornaguia.contratistas" :options="contratistas" label="Contratista" outlined dense />
+<!--                  <q-select v-model="tornaguia.contratistas" :options="contratistas" label="Contratista" outlined-->
+<!--                            dense/>-->
+                  <q-select v-model="tornaguia.contratista_id"
+                            :options="contratistas"
+                            option-label="label"
+                            option-value="value"
+                            map-options
+                            emit-value
+                            label="Contratista"
+                            outlined dense />
                 </div>
 
                 <div class="col-12 col-md-3">
-                  <q-input v-model="tornaguia.nit" label="NIT" outlined dense />
+                  <q-input v-model="tornaguia.nit" label="NIT" outlined dense/>
                 </div>
 
                 <div class="col-12 col-md-3">
-                  <q-input v-model="tornaguia.comprador" label="Comprador" outlined dense />
+                  <q-input v-model="tornaguia.comprador" label="Comprador" outlined dense/>
                 </div>
 
                 <div class="col-12 col-md-3">
-                  <q-input v-model="tornaguia.destino" label="Destino" outlined dense />
+                  <q-input v-model="tornaguia.destino" label="Destino" outlined dense/>
                 </div>
 
                 <div class="col-12 col-md-3">
-                  <q-select v-model="tornaguia.transportes" :options="transportes" label="Transporte" outlined dense />
+<!--                  <q-select v-model="tornaguia.transportes" :options="transportes" label="Transporte" outlined dense/>-->
+                  <q-select v-model="tornaguia.transporte_id"
+                            :options="transportes"
+                            option-label="label"
+                            option-value="value"
+                            map-options
+                            emit-value
+                            label="Transporte"
+                            outlined dense />
                 </div>
 
                 <div class="col-12 col-md-3">
-                  <q-select v-model="tornaguia.drivers" :options="drivers" label="Conductor" outlined dense />
+<!--                  <q-select v-model="tornaguia.drivers" :options="drivers" label="Conductor" outlined dense/>-->
+                  <q-select v-model="tornaguia.driver_id"
+                            :options="drivers"
+                            option-label="label"
+                            option-value="value"
+                            map-options
+                            emit-value
+                            label="Conductor"
+                            outlined dense />
                 </div>
 
                 <div class="col-12 col-md-3">
-                  <q-input v-model="tornaguia.cuadrilla" label="Cuadrilla" outlined dense />
+                  <q-input v-model="tornaguia.cuadrilla" label="Cuadrilla" outlined dense/>
                 </div>
 
                 <div class="col-12 col-md-3">
-                  <q-radio v-model="tornaguia.tipoMaterial" val="Mineral" label="Mineral" />
-                  <q-radio v-model="tornaguia.tipoMaterial" val="Embolsado" label="Embolsado" />
+                  <q-radio v-model="tornaguia.tipoMaterial" val="Mineral" label="Mineral"/>
+                  <q-radio v-model="tornaguia.tipoMaterial" val="Embolsado" label="Embolsado"/>
                 </div>
 
                 <div class="col-12 col-md-3">
-                  <q-checkbox v-for="mineral in ['Sn', 'Ag', 'Pb', 'Zn', 'Otros']" :key="mineral" v-model="tornaguia.mineralesSel" :val="mineral" :label="mineral" />
+                  <q-checkbox v-for="mineral in ['Sn', 'Ag', 'Pb', 'Zn', 'Otros']" :key="mineral"
+                              v-model="tornaguia.mineralesSel" :val="mineral" :label="mineral"/>
                 </div>
 
                 <div class="col-12 col-md-3" v-if="tornaguia.tipoMaterial === 'Mineral'">
-                  <q-input v-model="tornaguia.peso" type="number" label="Peso (Toneladas)" outlined dense />
+                  <q-input v-model="tornaguia.peso" type="number" label="Peso (Toneladas)" outlined dense/>
                 </div>
 
                 <div class="col-12 col-md-3" v-if="tornaguia.tipoMaterial === 'Embolsado'">
-                  <q-input v-model="tornaguia.sacos" type="number" label="Cantidad de Sacos" outlined dense />
+                  <q-input v-model="tornaguia.sacos" type="number" label="Cantidad de Sacos" outlined dense/>
                 </div>
 
                 <div class="col-12 col-md-3">
-                  <q-input v-model="tornaguia.cantidad" type="number" label="Cantidad" outlined dense />
+                  <q-input v-model="tornaguia.cantidad" type="number" label="Cantidad" outlined dense/>
                 </div>
 
                 <div class="col-12 col-md-3">
-                  <q-input v-model="tornaguia.lote" label="N° de Lote" outlined dense />
+                  <q-input v-model="tornaguia.lote" label="N° de Lote" outlined dense/>
                 </div>
-
                 <div class="col-12 col-md-3">
-                  <q-input v-model="tornaguia.broza" label="Broza" outlined dense />
+                  <q-input v-model="tornaguia.broza" label="Broza" outlined dense/>
                 </div>
-
               </div>
-            </q-card-section>
-
-            <q-card-actions align="right">
-              <q-btn label="Cancelar" flat v-close-popup />
-              <q-btn :loading="loading" type="submit" color="primary" icon="save" :label="tornaguiaCrear ? 'Guardar' : 'Modificar'" />
-            </q-card-actions>
-          </q-card>
-        </q-form>
+              <q-card-actions align="right">
+                <q-btn label="Cancelar" flat v-close-popup/>
+                <q-btn :loading="loading" type="submit" color="primary"
+                       icon="add_circle_outline" :label="tornaguiaCrear ? 'Guardar' : 'Modificar'"/>
+              </q-card-actions>
+            </q-form>
+          </q-card-section>
+        </q-card>
       </q-card>
     </q-dialog>
 
@@ -403,16 +436,27 @@ export default {
     //   })
     // });
     this.$api.get('datos').then((response) => {
-      this.empresas = response.data.empresas.map(empresa => ({label: empresa.nombre, value: empresa.id}))
-      this.contratistas = response.data.contratistas.map(contratista => ({
-        label: contratista.nombre,
-        value: contratista.id
-      }))
-      this.transportes = response.data.transportes.map(transporte => ({label: transporte.placa, value: transporte.id}))
-      this.drivers = response.data.drivers.map(driver => ({label: driver.name, value: driver.id}))
+      // this.empresas = response.data.empresas.map(empresa => ({label: empresa.nombre, value: empresa.id}))
+      // this.contratistas = response.data.contratistas.map(contratista => ({
+      //   label: contratista.nombre,
+      //   value: contratista.id
+      // }))
+      // this.transportes = response.data.transportes.map(transporte => ({label: transporte.placa, value: transporte.id}))
+      // this.drivers = response.data.drivers.map(driver => ({label: driver.name, value: driver.id}))
+      this.empresas = response.data.empresas.map(e => ({ label: e.nombre, value: e.id }))
+      this.contratistas = response.data.contratistas.map(c => ({ label: c.nombre, value: c.id }))
+      this.transportes = response.data.transportes.map(t => ({ label: t.placa, value: t.id }))
+      this.drivers = response.data.drivers.map(d => ({ label: d.name, value: d.id }))
     });
   },
   methods: {
+    submitForm() {
+      if (this.tornaguiaCrear) {
+        this.tornaguiaCreate();
+      } else {
+        this.tornaguiaUpdate();
+      }
+    },
     // finSemana(){
     //   let date = new Date();
     //   let day = date.getDay();
@@ -673,6 +717,7 @@ export default {
       }
     },
     tornaguiaUpdate() {
+      console.log('update')
       this.loading = true
       this.$api.put(`tornaguia/${this.tornaguia.id}`, this.tornaguia)
         .then(res => {
@@ -759,10 +804,10 @@ export default {
         centroMinero: 'Poopo',
         yacimiento: '',
         trancaSalida: '',
-        transporte: '',
-        driver: '',
-        empresa: '',
-        contratista: '',
+        transporte_id: null,
+        driver_id: null,
+        empresa_id: null,
+        contratista_id: null,
         nit: '',
         comprador: '',
         destino: '',
@@ -773,68 +818,40 @@ export default {
         peso: '',
         cantidad: '',
         lote: '',
+        user_id: this.store.user.id
       }
-      this.showAddTornaguiaDialog = true;
+      this.showAddTornaguiaDialog = true
       this.tornaguiaCrear = true
     },
     tornaguiaCreate() {
-      if (this.tornaguiaCrear) {
-        this.loading = true
-        this.tornaguia.empresa_id = this.tornaguia.empresas.value
-        this.tornaguia.contratista_id = this.tornaguia.contratistas.value
-        this.tornaguia.transporte_id = this.tornaguia.transportes.value
-        this.tornaguia.driver_id = this.tornaguia.drivers.value
-        this.tornaguia.user_id = this.store.user.id
-        let materiales = ''
-        this.tornaguia.mineralesSel.forEach((mineral) => {
-          materiales = materiales + mineral + ','
+      this.loading = true
+
+      // Convertir array de minerales a string
+      let materiales = ''
+      this.tornaguia.mineralesSel.forEach((mineral) => {
+        materiales += mineral + ','
+      })
+      this.tornaguia.minerales = materiales
+
+      this.$api.post('tornaguia', this.tornaguia).then(response => {
+        this.tornaguias.unshift(response.data)
+        this.showAddTornaguiaDialog = false
+
+        this.tornaguia = {
+          fecha: date.formatDate(new Date(), 'YYYY-MM-DD'),
+          mineralesSel: [],
+        }
+
+        this.loading = false
+      }).catch(error => {
+        this.loading = false
+        this.$q.notify({
+          color: 'negative',
+          message: error.response?.data?.message || 'Error al guardar',
+          icon: 'report_problem',
+          position: 'top'
         })
-        this.tornaguia.minerales = materiales
-        this.$api.post('tornaguia', this.tornaguia).then(response => {
-          // this.tornaguiasGet()
-          this.tornaguias.unshift(response.data)
-          this.showAddTornaguiaDialog = false
-          this.tornaguia = {
-            fecha: date.formatDate(new Date(), 'YYYY-MM-DD'),
-            mineralesSel: [],
-          }
-          this.loading = false
-        }).catch(error => {
-          this.loading = false
-          this.$q.notify({
-            color: 'negative',
-            message: error.response.data.message,
-            icon: 'report_problem',
-            position: 'top'
-          })
-        })
-      } else {
-        this.loading = true
-        this.tornaguia.empresa_id = this.tornaguia.empresas.value
-        this.tornaguia.contratista_id = this.tornaguia.contratistas.value
-        this.tornaguia.transporte_id = this.tornaguia.transportes.value
-        this.tornaguia.driver_id = this.tornaguia.drivers.value
-        this.tornaguia.user_id = this.store.user.id
-        let materiales = ''
-        this.tornaguia.mineralesSel.forEach((mineral) => {
-          materiales = materiales + mineral + ','
-        })
-        this.tornaguia.minerales = materiales
-        this.$api.put('tornaguia/' + this.tornaguia.id, this.tornaguia).then(response => {
-          this.tornaguiasGet()
-          this.showAddTornaguiaDialog = false
-          this.tornaguia = {}
-          this.loading = false
-        }).catch(error => {
-          this.loading = false
-          this.$q.notify({
-            color: 'negative',
-            message: error.response.data.message,
-            icon: 'report_problem',
-            position: 'top'
-          })
-        })
-      }
+      })
     },
     tornaguiaEdit(tornaguia) {
       this.tornaguia = tornaguia
