@@ -127,7 +127,7 @@ class TornaguiaController extends Controller{
     public function imprimir($id)
     {
         $tg = Tornaguia::with(['empresa', 'contratista', 'transporte', 'driver', 'user'])->findOrFail($id);
-        $url = env('APP_URL') . '/api/vista/' . $tg->id;
+        $url = env('APP_URL') . '/api/tornaguia/vista/' . $tg->id;
 
         // 🟢 Generar imagen PNG del QR
         $result = Builder::create()
