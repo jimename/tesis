@@ -215,6 +215,9 @@
                 <div class="col-12 col-md-2">
                   <q-input v-model="tornaguia.fecha" type="date" label="Fecha" outlined dense/>
                 </div>
+                <div class="col-12 col-md-2">
+                  <q-input v-model="tornaguia.numero" label="Número" outlined dense />
+                </div>
 
                 <div class="col-12 col-md-2">
                   <q-input v-model="tornaguia.hora" type="time" label="Hora" outlined dense/>
@@ -717,30 +720,34 @@ export default {
       }
     },
     tornaguiaUpdate() {
-      console.log('update')
       this.loading = true
-      this.$api.put(`tornaguia/${this.tornaguia.id}`, this.tornaguia)
-        .then(res => {
-          this.loading = false
-          this.showUpdateTornaguiaDialog = false
-          this.$q.notify({
-            color: 'green-4',
-            textColor: 'white',
-            icon: 'check_circle',
-            message: 'Tornaguia actualizado'
-          })
-          this.tornaguia = {}
-          this.tornaguiasGet()
+
+      let materiales = ''
+      this.tornaguia.mineralesSel.forEach((mineral) => {
+        materiales += mineral + ','
+      })
+      this.tornaguia.minerales = materiales
+
+      this.$api.put('tornaguia/' + this.tornaguia.id, this.tornaguia).then(response => {
+        this.tornaguiasGet()
+        this.showAddTornaguiaDialog = false
+        this.tornaguia = {}
+        this.loading = false
+        this.$q.notify({
+          color: 'positive',
+          message: 'Tornaguia modificada correctamente',
+          icon: 'check_circle',
+          position: 'top'
         })
-        .catch(err => {
-          this.loading = false
-          this.$q.notify({
-            color: 'red-4',
-            textColor: 'white',
-            icon: 'error',
-            message: 'Error al actualizar usuario'
-          })
+      }).catch(error => {
+        this.loading = false
+        this.$q.notify({
+          color: 'negative',
+          message: error.response?.data?.message || 'Error al modificar',
+          icon: 'report_problem',
+          position: 'top'
         })
+      })
     },
     tornaguiasGet() {
       // this.$q.loading.show()
@@ -800,6 +807,7 @@ export default {
       this.tornaguia = {
         fecha: date.formatDate(new Date(), 'YYYY-MM-DD'),
         hora: date.formatDate(new Date(), 'HH:mm'),
+        numero: '',
         departamento: 'Oruro',
         centroMinero: 'Poopo',
         yacimiento: '',
@@ -857,42 +865,6 @@ export default {
       this.tornaguia = tornaguia
       this.tornaguiaCrear = false
       this.showUpdateTornaguiaDialog = true
-    },
-    updatePassword(tornaguia) {
-      this.$q.dialog({
-        title: 'Cambiar contraseña',
-        message: 'Ingrese la nueva contraseña',
-        prompt: {
-          model: '',
-          type: 'password'
-        },
-        cancel: true,
-        persistent: true
-      }).onOk(data => {
-        this.$api.put(`updatePassword/${tornaguia.id}`, {password: data})
-          .then(res => {
-            this.$q.notify({
-              color: 'green-4',
-              textColor: 'white',
-              icon: 'check_circle',
-              position: 'top',
-              message: 'Contraseña actualizada'
-            })
-          })
-          .catch(err => {
-            this.$q.notify({
-              color: 'red-4',
-              textColor: 'white',
-              icon: 'error',
-              position: 'top',
-              message: err.response.data.message
-            })
-          })
-      }).onCancel(() => {
-        console.log('Cancel')
-      }).onDismiss(() => {
-        console.log('Dismissed')
-      })
     },
     tornaguiaDelete(tornaguia) {
       this.$q.dialog({
