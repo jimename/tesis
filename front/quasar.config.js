@@ -78,9 +78,9 @@ module.exports = configure(function (ctx) {
           .use(ESLintPlugin, [{ extensions: [ 'js', 'vue' ] }])
       },
       env:{
-        API: ctx.dev ? 'http://localhost:8000/api/' : 'https://btorna.tuprogam.com/api/',
-        API_FRONT: ctx.dev ? 'http://localhost:8080/#/' : 'https://torna.tuprogam.com/#/',
-        API_FRONT_LOCAL: ctx.dev ? 'https://torna.tuprogam.com/#/' : 'https://torna.tuprogam.com/#/',
+        API: ctx.dev ? 'http://localhost:8000/api/' : 'https://bsanpablo.tuprogam.com/api/',
+        // API_FRONT: ctx.dev ? 'http://localhost:8080/#/' : 'https://torna.tuprogam.com/#/',
+        // API_FRONT_LOCAL: ctx.dev ? 'https://torna.tuprogam.com/#/' : 'https://torna.tuprogam.com/#/',
       }
 
     },

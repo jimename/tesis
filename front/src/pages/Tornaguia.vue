@@ -70,7 +70,7 @@
 <!--                <q-item-section>Imprimir con fondo</q-item-section>-->
 <!--              </q-item>-->
               <q-item v-if="store.permissions.includes('tornaguia read')" clickable v-close-popup
-                      :to="'/show/'+props.row.id">
+                      @click="abrirVista(props.row)">
                 <q-item-section avatar>
                   <q-icon name="o_visibility"/>
                 </q-item-section>
@@ -802,6 +802,10 @@ export default {
       }
 
       xlsx(data, settings) // Will download the excel file
+    },
+    abrirVista(item) {
+      const url = `${process.env.API}tornaguia/vista/${item.id}`;
+      window.open(url, '_blank');
     },
     abrirImpresion(item) {
       const url = `${process.env.API}tornaguia/print/${item.id}`;
