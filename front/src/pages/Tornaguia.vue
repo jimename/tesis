@@ -48,27 +48,27 @@
                 </q-item-section>
                 <q-item-section>Modificar</q-item-section>
               </q-item>
-              <q-item v-if="store.permissions.includes('tornaguia read')" clickable v-close-popup
-                      @click="print(props.row,'todo')">
-                <q-item-section avatar>
-                  <q-icon name="o_print"/>
-                </q-item-section>
-                <q-item-section>Imprimir Todo</q-item-section>
-              </q-item>
-              <q-item v-if="store.permissions.includes('tornaguia read')" clickable v-close-popup
-                      @click="print(props.row,'nada')">
-                <q-item-section avatar>
-                  <q-icon name="o_print"/>
-                </q-item-section>
-                <q-item-section>Imprimir sin nada</q-item-section>
-              </q-item>
-              <q-item v-if="store.permissions.includes('tornaguia read')" clickable v-close-popup
-                      @click="print(props.row,'fondo')">
-                <q-item-section avatar>
-                  <q-icon name="o_print"/>
-                </q-item-section>
-                <q-item-section>Imprimir con fondo</q-item-section>
-              </q-item>
+<!--              <q-item v-if="store.permissions.includes('tornaguia read')" clickable v-close-popup-->
+<!--                      @click="print(props.row,'todo')">-->
+<!--                <q-item-section avatar>-->
+<!--                  <q-icon name="o_print"/>-->
+<!--                </q-item-section>-->
+<!--                <q-item-section>Imprimir Todo</q-item-section>-->
+<!--              </q-item>-->
+<!--              <q-item v-if="store.permissions.includes('tornaguia read')" clickable v-close-popup-->
+<!--                      @click="print(props.row,'nada')">-->
+<!--                <q-item-section avatar>-->
+<!--                  <q-icon name="o_print"/>-->
+<!--                </q-item-section>-->
+<!--                <q-item-section>Imprimir sin nada</q-item-section>-->
+<!--              </q-item>-->
+<!--              <q-item v-if="store.permissions.includes('tornaguia read')" clickable v-close-popup-->
+<!--                      @click="print(props.row,'fondo')">-->
+<!--                <q-item-section avatar>-->
+<!--                  <q-icon name="o_print"/>-->
+<!--                </q-item-section>-->
+<!--                <q-item-section>Imprimir con fondo</q-item-section>-->
+<!--              </q-item>-->
               <q-item v-if="store.permissions.includes('tornaguia read')" clickable v-close-popup
                       :to="'/show/'+props.row.id">
                 <q-item-section avatar>
@@ -77,7 +77,7 @@
                 <q-item-section>Ver</q-item-section>
               </q-item>
               <q-item v-if="store.permissions.includes('tornaguia read')" clickable v-close-popup
-                      @click="printPage(props.row)">
+                      @click="abrirImpresion(props.row)">
                 <q-item-section avatar>
                   <q-icon name="o_print"/>
                 </q-item-section>
@@ -802,6 +802,10 @@ export default {
       }
 
       xlsx(data, settings) // Will download the excel file
+    },
+    abrirImpresion(item) {
+      const url = `${process.env.API}tornaguia/print/${item.id}`;
+      window.open(url, '_blank');
     },
     tornaguiaClick() {
       this.tornaguia = {
