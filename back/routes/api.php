@@ -23,6 +23,8 @@ Route::post('/login', [App\Http\Controllers\UserController::class, 'login']);
 //Route::apiResource('tornaguia', App\Http\Controllers\TornaguiaController::class);
 //post
 Route::get('tornaguia', [App\Http\Controllers\TornaguiaController::class, 'index']);
+Route::get('/tornaguia/vista/{id}', [TornaguiaController::class, 'vistaWeb']);
+
 
 Route::get('tornaguia/print/{id}', [TornaguiaController::class, 'imprimir']);
 

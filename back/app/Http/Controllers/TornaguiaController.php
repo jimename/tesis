@@ -10,8 +10,15 @@ use App\Http\Requests\UpdateTornaguiaRequest;
 use App\Models\Transporte;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\Writer\PngWriter;
 
 class TornaguiaController extends Controller{
+    public function vistaWeb($id) {
+        $tg = Tornaguia::with(['transporte', 'empresa', 'contratista', 'user', 'driver'])->findOrFail($id);
+        return view('tornaguia.vista', compact('tg'));
+    }
     function tornaguiasGet(Request $request){
         $fechaIni = $request->fechaIni;
         $fechaFin = $request->fechaFin;
@@ -120,7 +127,23 @@ class TornaguiaController extends Controller{
     public function imprimir($id)
     {
         $tg = Tornaguia::with(['empresa', 'contratista', 'transporte', 'driver', 'user'])->findOrFail($id);
-        $pdf = Pdf::loadView('tornaguia.print', compact('tg'));
-        return $pdf->stream('tornaguia-'.$tg->numero.'.pdf');
+        $url = env('APP_URL') . '/api/vista/' . $tg->id;
+
+        // 🟢 Generar imagen PNG del QR
+        $result = Builder::create()
+            ->writer(new PngWriter())
+            ->data($url)
+            ->encoding(new Encoding('UTF-8'))
+            ->size(150)
+            ->build();
+
+        // 🖼️ Convertir a base64 para insertarlo en el PDF
+        $qr = 'data:image/png;base64,' . base64_encode($result->getString());
+
+        $logo1 = 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('logo.png')));
+        $logo2 = 'data:image/jpeg;base64,' . base64_encode(file_get_contents(public_path('logo2.jpg')));
+
+        return \Barryvdh\DomPDF\Facade\Pdf::loadView('tornaguia.print', compact('tg', 'qr', 'logo1', 'logo2'))
+            ->stream('tornaguia-'.$tg->numero.'.pdf');
     }
 }

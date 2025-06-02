@@ -53,7 +53,7 @@
 <table class="header-table">
     <tr>
         <td class="header-logo">
-            <img src="{{ public_path('logo.png') }}" alt="Logo Izquierdo" width="70">
+            <img src="{{ $logo1 }}" alt="Logo Izquierdo" width="70">
         </td>
         <td>
             <div class="titulo">TORNA - GUIA PARA TRANSPORTE DE MINERALES</div>
@@ -61,7 +61,7 @@
             <div class="boldRed">Numero de Tornaguia: {{ $tg->numero }}</div>
         </td>
         <td class="header-logo">
-            <img src="{{ public_path('logo2.jpg') }}" alt="Logo Derecho" width="70">
+            <img src="{{ $logo2 }}" alt="Logo Derecho" width="70">
         </td>
     </tr>
 </table>
@@ -131,7 +131,15 @@
     <tr>
         <td colspan="2"><strong>Fecha de Retorno:</strong> _________________________</td>
     </tr>
+    <tr>
+        <td colspan="4" style="text-align: right;">
+            <div style="width: 130px; float: right;">
+                <img src="{{ $qr }}" width="120">
+                <div style="font-size: 10px; text-align: center;">Verificación QR</div>
+            </div>
+        </td>
+    </tr>
 </table>
-
+<br><br>
 </body>
 </html>

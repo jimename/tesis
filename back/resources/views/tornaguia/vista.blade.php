@@ -56,7 +56,9 @@
     <img src="/logo.png" class="logo" alt="Logo Izq">
     <div>
         <div class="titulo">TORNA - GUIA PARA TRANSPORTE DE MINERALES</div>
+        <br>
         <div class="subtitulo">Personería Jurídica 104/08 - Testimonio N° 457/2020</div>
+        <br>
         <div class="numero">Número de Tornaguia: 222</div>
     </div>
     <img src="/logo2.jpg" class="logo" alt="Logo Der">
