@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TornaguiaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +20,18 @@ use Illuminate\Support\Facades\Route;
 //});
 Route::post('/login', [App\Http\Controllers\UserController::class, 'login']);
 //Route::post('/register', [App\Http\Controllers\UserController::class, 'register']);
-Route::apiResource('tornaguia', App\Http\Controllers\TornaguiaController::class);
+//Route::apiResource('tornaguia', App\Http\Controllers\TornaguiaController::class);
+//post
+Route::get('tornaguia', [App\Http\Controllers\TornaguiaController::class, 'index']);
+
+Route::get('tornaguia/print/{id}', [TornaguiaController::class, 'imprimir']);
+
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post('tornaguia', [App\Http\Controllers\TornaguiaController::class, 'store']);
+    Route::get('tornaguia/{id}', [App\Http\Controllers\TornaguiaController::class, 'show']);
+    Route::put('tornaguia/{id}', [App\Http\Controllers\TornaguiaController::class, 'update']);
+    Route::delete('tornaguia/{id}', [App\Http\Controllers\TornaguiaController::class, 'destroy']);
+
     Route::post('/logout', [App\Http\Controllers\UserController::class, 'logout']);
     Route::post('/me', [App\Http\Controllers\UserController::class, 'me']);
     Route::put('/updatePassword/{user}', [App\Http\Controllers\UserController::class, 'updatePassword']);

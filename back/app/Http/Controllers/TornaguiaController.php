@@ -9,6 +9,7 @@ use App\Http\Requests\StoreTornaguiaRequest;
 use App\Http\Requests\UpdateTornaguiaRequest;
 use App\Models\Transporte;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TornaguiaController extends Controller{
     function tornaguiasGet(Request $request){
@@ -115,5 +116,11 @@ class TornaguiaController extends Controller{
         $tornaguia = Tornaguia::findOrFail($id);
         $tornaguia->delete();
         return $tornaguia;
+    }
+    public function imprimir($id)
+    {
+        $tg = Tornaguia::with(['empresa', 'contratista', 'transporte', 'driver', 'user'])->findOrFail($id);
+        $pdf = Pdf::loadView('tornaguia.print', compact('tg'));
+        return $pdf->stream('tornaguia-'.$tg->numero.'.pdf');
     }
 }
