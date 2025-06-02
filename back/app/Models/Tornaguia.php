@@ -4,26 +4,36 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tornaguia extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'fecha',
         'numero',
+        'hora',
+        'departamento',
+        'centroMinero',
         'yacimiento',
         'tranca',
-        'peso',
-        'sacos',
+        'trancaSalida',
         'cuadrilla',
         'tipoMaterial',
         'minerales',
+        'peso',
+        'sacos',
+        'cantidad',
+        'lote',
+        'broza',
+        'nit',
+        'comprador',
+        'destino',
         'transporte_id',
         'empresa_id',
         'contratista_id',
         'user_id',
         'driver_id',
-        'hora'
     ];
     public function transporte(){ return $this->belongsTo(Transporte::class); }
     public function empresa(){ return $this->belongsTo(Empresa::class); }

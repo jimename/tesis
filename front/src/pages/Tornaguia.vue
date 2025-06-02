@@ -207,20 +207,109 @@
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6">{{ tornaguiaCrear ? 'Generacion de' : 'Modificar' }} Tornaguia o Cartaporte</div>
         </q-card-section>
-        <q-card-section></q-card-section>
-        <q-form @submit.prevent="tornaguiaCrear?tornaguiaCreate:tornaguiaUpdate">
+
+        <q-form @submit.prevent="tornaguiaCrear ? tornaguiaCreate : tornaguiaUpdate">
           <q-card>
             <q-card-section class="q-pa-xs">
-              <div class="row">
+              <div class="row q-col-gutter-sm">
+
                 <div class="col-12 col-md-2">
-                  <q-input v-model="tornaguia.fecha" type="date" :label="`Fecha: ${tornaguia.fecha} `" outlined dense/>
+                  <q-input v-model="tornaguia.fecha" type="date" label="Fecha" outlined dense />
                 </div>
+
+                <div class="col-12 col-md-2">
+                  <q-input v-model="tornaguia.hora" type="time" label="Hora" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <q-select v-model="tornaguia.departamento" :options="['Oruro', 'La Paz', 'Cochabamba', 'Santa Cruz', 'Potosi', 'Tarija', 'Chuquisaca', 'Beni', 'Pando']" label="Departamento" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <q-input v-model="tornaguia.centroMinero" label="Centro Minero" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <q-input v-model="tornaguia.yacimiento" label="Yacimiento" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-2">
+                  <q-input v-model="tornaguia.trancaSalida" label="Tranca Salida" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-3">
+                  <q-select v-model="tornaguia.empresas" :options="empresas" label="Empresa Destino" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-3">
+                  <q-select v-model="tornaguia.contratistas" :options="contratistas" label="Contratista" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-3">
+                  <q-input v-model="tornaguia.nit" label="NIT" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-3">
+                  <q-input v-model="tornaguia.comprador" label="Comprador" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-3">
+                  <q-input v-model="tornaguia.destino" label="Destino" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-3">
+                  <q-select v-model="tornaguia.transportes" :options="transportes" label="Transporte" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-3">
+                  <q-select v-model="tornaguia.drivers" :options="drivers" label="Conductor" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-3">
+                  <q-input v-model="tornaguia.cuadrilla" label="Cuadrilla" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-3">
+                  <q-radio v-model="tornaguia.tipoMaterial" val="Mineral" label="Mineral" />
+                  <q-radio v-model="tornaguia.tipoMaterial" val="Embolsado" label="Embolsado" />
+                </div>
+
+                <div class="col-12 col-md-3">
+                  <q-checkbox v-for="mineral in ['Sn', 'Ag', 'Pb', 'Zn', 'Otros']" :key="mineral" v-model="tornaguia.mineralesSel" :val="mineral" :label="mineral" />
+                </div>
+
+                <div class="col-12 col-md-3" v-if="tornaguia.tipoMaterial === 'Mineral'">
+                  <q-input v-model="tornaguia.peso" type="number" label="Peso (Toneladas)" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-3" v-if="tornaguia.tipoMaterial === 'Embolsado'">
+                  <q-input v-model="tornaguia.sacos" type="number" label="Cantidad de Sacos" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-3">
+                  <q-input v-model="tornaguia.cantidad" type="number" label="Cantidad" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-3">
+                  <q-input v-model="tornaguia.lote" label="N° de Lote" outlined dense />
+                </div>
+
+                <div class="col-12 col-md-3">
+                  <q-input v-model="tornaguia.broza" label="Broza" outlined dense />
+                </div>
+
               </div>
             </q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn label="Cancelar" flat v-close-popup />
+              <q-btn :loading="loading" type="submit" color="primary" icon="save" :label="tornaguiaCrear ? 'Guardar' : 'Modificar'" />
+            </q-card-actions>
           </q-card>
         </q-form>
       </q-card>
     </q-dialog>
+
     <div id="myelement" class="hidden"></div>
   </q-page>
 </template>
