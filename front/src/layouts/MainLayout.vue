@@ -119,23 +119,13 @@
               </q-item-section>
             </q-item>
             <q-item
-              v-if="store.permissions.includes('tornaguia create')||store.permissions.includes('tornaguia read')||store.permissions.includes('tornaguia update')||store.permissions.includes('tornaguia delete')"
-              clickable exact to="tornaguia" active-class="bg-blue-grey-6 text-white">
+              v-if="store.permissions.includes('user create')||store.permissions.includes('user read')||store.permissions.includes('user update')||store.permissions.includes('user delete')"
+              clickable exact to="user" active-class="bg-blue-grey-6 text-white">
               <q-item-section avatar>
-                <q-icon name="o_description"/>
+                <q-icon name="o_people"/>
               </q-item-section>
               <q-item-section>
-                Tornaguias
-              </q-item-section>
-            </q-item>
-            <q-item
-              v-if="store.permissions.includes('transporte create')||store.permissions.includes('transporte read')||store.permissions.includes('transporte update')||store.permissions.includes('transporte delete')"
-              clickable exact to="transporte" active-class="bg-blue-grey-6 text-white">
-              <q-item-section avatar>
-                <q-icon name="o_directions_bus_filled"/>
-              </q-item-section>
-              <q-item-section>
-                Transporte
+                Usuarios
               </q-item-section>
             </q-item>
             <q-item
@@ -149,16 +139,6 @@
               </q-item-section>
             </q-item>
             <q-item
-              v-if="store.permissions.includes('empresa create')||store.permissions.includes('empresa read')||store.permissions.includes('empresa update')||store.permissions.includes('empresa delete')"
-              clickable exact to="empresa" active-class="bg-blue-grey-6 text-white">
-              <q-item-section avatar>
-                <q-icon name="o_business"/>
-              </q-item-section>
-              <q-item-section>
-                Empresa
-              </q-item-section>
-            </q-item>
-            <q-item
               v-if="store.permissions.includes('conductor create')||store.permissions.includes('conductor read')||store.permissions.includes('conductor update')||store.permissions.includes('conductor delete')"
               clickable exact to="driver" active-class="bg-blue-grey-6 text-white">
               <q-item-section avatar>
@@ -169,13 +149,33 @@
               </q-item-section>
             </q-item>
             <q-item
-              v-if="store.permissions.includes('user create')||store.permissions.includes('user read')||store.permissions.includes('user update')||store.permissions.includes('user delete')"
-              clickable exact to="user" active-class="bg-blue-grey-6 text-white">
+              v-if="store.permissions.includes('transporte create')||store.permissions.includes('transporte read')||store.permissions.includes('transporte update')||store.permissions.includes('transporte delete')"
+              clickable exact to="transporte" active-class="bg-blue-grey-6 text-white">
               <q-item-section avatar>
-                <q-icon name="o_people"/>
+                <q-icon name="o_directions_bus_filled"/>
               </q-item-section>
               <q-item-section>
-                Usuarios
+                Transporte
+              </q-item-section>
+            </q-item>
+            <q-item
+              v-if="store.permissions.includes('empresa create')||store.permissions.includes('empresa read')||store.permissions.includes('empresa update')||store.permissions.includes('empresa delete')"
+              clickable exact to="empresa" active-class="bg-blue-grey-6 text-white">
+              <q-item-section avatar>
+                <q-icon name="o_business"/>
+              </q-item-section>
+              <q-item-section>
+                Empresa
+              </q-item-section>
+            </q-item>
+            <q-item
+              v-if="store.permissions.includes('tornaguia create')||store.permissions.includes('tornaguia read')||store.permissions.includes('tornaguia update')||store.permissions.includes('tornaguia delete')"
+              clickable exact to="tornaguia" active-class="bg-blue-grey-6 text-white">
+              <q-item-section avatar>
+                <q-icon name="o_description"/>
+              </q-item-section>
+              <q-item-section>
+                Tornaguias
               </q-item-section>
             </q-item>
           </q-list>
