@@ -3,23 +3,54 @@
     <q-table :rows="users" :columns="userColums" :filter="search" :rows-per-page-options="[0]" dense wrap-cells>
       <template v-slot:top-right>
         <q-toolbar>
-          <q-btn v-if="store.permissions.includes('user create')" flat icon="add_circle_outline" @click="showAddUserDialog = true;userCrear=true" />
+          <q-btn v-if="store.permissions.includes('user create')" icon="add_circle_outline" @click="showAddUserDialog = true;userCrear=true"
+                 dense label="Agregar Usuario" class="q-mr-sm" color="green" no-caps />
           <q-input v-model="search"  outlined  dense placeholder="Buscar..." />
         </q-toolbar>
       </template>
       <template v-slot:body-cell-permission="props">
-        <q-td :props="props" auto-width >
+        <q-td :props="props" >
           <ul style="list-style: none;">
             <li class="q-pa-none q-ma-none" v-for="p in props.row.permissions" :key="p.id">{{p.name}}</li>
           </ul>
         </q-td>
       </template>
       <template v-slot:body-cell-option="props">
-        <q-td :props="props" auto-width >
-          <q-btn v-if="store.permissions.includes('user update')" flat dense icon="o_edit" @click="userEdit(props.row)" />
-          <q-btn v-if="store.permissions.includes('user delete')&&props.row.id!=1" flat dense icon="o_delete" @click="userDelete(props.row)" />
-          <q-btn v-if="store.permissions.includes('user update')&&props.row.id!=1" flat dense icon="o_key" @click="updatePassword(props.row)" />
-          <q-btn flat dense v-if="store.permissions.includes('user update') && props.row.id!=1" icon="o_lock" @click="updatePermission(props.row)" />
+        <q-td :props="props" >
+<!--          <q-btn v-if="store.permissions.includes('user update')" flat dense icon="o_edit" @click="userEdit(props.row)" />-->
+<!--          <q-btn v-if="store.permissions.includes('user delete')" flat dense icon="o_delete" @click="userDelete(props.row)" />-->
+<!--          <q-btn v-if="store.permissions.includes('user update')" flat dense icon="o_key" @click="updatePassword(props.row)" />-->
+<!--          <q-btn flat dense v-if="store.permissions.includes('user update')" icon="o_lock" @click="updatePermission(props.row)" />-->
+          <q-btn-dropdown v-if="store.permissions.includes('user update')" dense icon="more_vert" color="primary" no-caps
+            label="Opciones" class="q-ml-sm">
+          >
+            <q-list>
+              <q-item clickable v-ripple @click="userEdit(props.row)" v-close-popup>
+                <q-item-section avatar>
+                  <q-icon name="edit" />
+                </q-item-section>
+                <q-item-section>Editar</q-item-section>
+              </q-item>
+              <q-item clickable v-ripple @click="userDelete(props.row)" v-close-popup>
+                <q-item-section avatar>
+                  <q-icon name="delete" />
+                </q-item-section>
+                <q-item-section>Eliminar</q-item-section>
+              </q-item>
+              <q-item clickable v-ripple @click="updatePassword(props.row)" v-close-popup>
+                <q-item-section avatar>
+                  <q-icon name="key" />
+                </q-item-section>
+                <q-item-section>Cambiar contraseña</q-item-section>
+              </q-item>
+              <q-item clickable v-ripple @click="updatePermission(props.row)" v-close-popup>
+                <q-item-section avatar>
+                  <q-icon name="lock" />
+                </q-item-section>
+                <q-item-section>Modificar permisos</q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
         </q-td>
       </template>
     </q-table>
@@ -32,8 +63,9 @@
           <q-form @submit.prevent="userCreate">
             <q-input v-model="user.name" hint="" required outlined label="Nombre" />
             <q-input v-model="user.email" hint="" required outlined label="Email" />
+            <q-input v-model="user.username" hint="" required outlined label="Username" />
             <q-input v-model="user.password" type="password" hint="" required outlined label="Password" />
-<!--            <q-select v-model="user.role" hint="" required outlined label="Rol" :options="roles" />-->
+            <q-select v-model="user.role" hint="" required outlined label="Rol" :options="roles" />
             <q-btn :loading="loading" type="submit" color="primary" icon="add_circle_outline" label="Guardar" class="full-width" />
           </q-form>
         </q-card-section>
@@ -48,7 +80,8 @@
           <q-form @submit.prevent="userUpdate">
             <q-input v-model="user.name" hint="" required outlined label="Nombre" />
             <q-input v-model="user.email" hint="" required outlined label="Email" />
-<!--            <q-select v-model="user.role" hint="" required outlined label="Rol" :options="roles" />-->
+            <q-input v-model="user.username" hint="" required outlined label="Username" />
+            <q-select v-model="user.role" hint="" required outlined label="Rol" :options="roles" />
             <q-btn :loading="loading" type="submit" color="primary" icon="add_circle_outline" label="Guardar" class="full-width" />
           </q-form>
         </q-card-section>
@@ -81,10 +114,10 @@ export default {
     return {
       store: useCounterStore(),
       roles: [
-        'INSCRIPCION',
-        'ACREDITACION',
-        'REFRIGERIO',
-        'ADMINISTRADOR',
+        'Consejo vigilancia',
+        'Consejo administrativo',
+        'Secretariaria',
+        'Gerente',
       ],
       showAddUserDialog: false,
       showUpdateUserDialog: false,
@@ -95,7 +128,7 @@ export default {
       userCrear: true,
       userColums:[
         {name: 'option', field: 'option', label: 'Opciones', align: 'left', sortable: true},
-        // {name: 'role', field: 'role', label: 'Rol', align: 'left', sortable: true},
+        {name: 'role', field: 'role', label: 'Rol', align: 'left', sortable: true},
         // {name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true},
         {name: 'name', label: 'Nombre', field: 'name', align: 'left', sortable: true},
         {name: 'permission', label: 'Permisos', field: 'permission', align: 'left', sortable: true},
@@ -214,7 +247,7 @@ export default {
       }
     },
     userEdit(user){
-      this.user = user
+      this.user = { ...user }
       this.userCrear = false
       this.showUpdateUserDialog = true
     },
