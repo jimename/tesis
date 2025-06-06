@@ -3,7 +3,8 @@
     <q-table :rows="drivers" :columns="driverColums" :filter="search" :rows-per-page-options="[0]" dense wrap-cells>
       <template v-slot:top-right>
         <q-toolbar>
-          <q-btn v-if="store.permissions.includes('conductor create')" flat icon="add_circle_outline" @click="showAddDriverDialog = true;driverCrear=true" />
+          <q-btn v-if="store.permissions.includes('conductor create')" icon="add_circle_outline" @click="showAddDriverDialog = true;driverCrear=true"
+            label="Agregar Conductor" color="green" class="q-mr-sm" dense no-caps />
           <q-input v-model="search"  outlined  dense placeholder="Buscar..." />
         </q-toolbar>
       </template>
@@ -14,10 +15,26 @@
       </template>
       <template v-slot:body-cell-option="props">
         <q-td :props="props" auto-width >
-          <q-btn-group flat>
-            <q-btn v-if="store.permissions.includes('conductor update')" flat dense icon="o_edit" @click="driverEdit(props.row)" size="10px" />
-            <q-btn v-if="store.permissions.includes('conductor delete')" flat dense icon="o_delete" @click="driverDelete(props.row)" size="10px" />
-          </q-btn-group>
+<!--          <q-btn-group flat>-->
+<!--            <q-btn v-if="store.permissions.includes('conductor update')" flat dense icon="o_edit" @click="driverEdit(props.row)" size="10px" />-->
+<!--            <q-btn v-if="store.permissions.includes('conductor delete')" flat dense icon="o_delete" @click="driverDelete(props.row)" size="10px" />-->
+<!--          </q-btn-group>-->
+          <q-btn-dropdown dense size="10px" label="Opciones" class="q-ml-xs" no-caps color="primary">
+            <q-list>
+              <q-item v-if="store.permissions.includes('conductor update')" clickable @click="driverEdit(props.row)" v-close-popup>
+                <q-item-section avatar>
+                  <q-icon name="edit" />
+                </q-item-section>
+                <q-item-section>Editar</q-item-section>
+              </q-item>
+              <q-item v-if="store.permissions.includes('conductor delete')" clickable @click="driverDelete(props.row)" v-close-popup>
+                <q-item-section avatar>
+                  <q-icon name="delete" />
+                </q-item-section>
+                <q-item-section>Eliminar</q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
         </q-td>
       </template>
     </q-table>
@@ -161,7 +178,7 @@ export default {
       }
     },
     driverEdit(driver){
-      this.driver = driver
+      this.driver = {...driver}
       this.driverCrear = false
       this.showUpdateDriverDialog = true
     },
