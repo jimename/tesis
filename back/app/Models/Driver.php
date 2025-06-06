@@ -14,5 +14,6 @@ class Driver extends Model
         'telefono',
         'celular',
         'licencia',
+        'estado',
     ];
 }
