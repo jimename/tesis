@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TornaguiaController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,9 @@ Route::post('/login', [App\Http\Controllers\UserController::class, 'login']);
 //post
 Route::get('tornaguia', [App\Http\Controllers\TornaguiaController::class, 'index']);
 Route::get('/tornaguia/vista/{id}', [TornaguiaController::class, 'vistaWeb']);
+//Route::post('/attach', [UserController::class, 'attachPermissions']);
+Route::get('/permissions', [UserController::class, 'allPermissions']);
+
 
 
 Route::get('tornaguia/print/{id}', [TornaguiaController::class, 'imprimir']);

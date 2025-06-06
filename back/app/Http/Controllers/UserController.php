@@ -5,9 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
 
-class UserController extends Controller
-{
+class UserController extends Controller{
+    public function allPermissions()
+    {
+        return Permission::all();
+    }
+    public function attachPermissions(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'permission' => 'required|array'
+        ]);
+
+        $user = User::findOrFail($request->user_id);
+
+        // Opcionalmente, validamos si los permisos existen
+        $allPermissions = Permission::whereIn('name', $request->permission)->pluck('name')->toArray();
+
+        // Sync reemplaza todos los permisos previos con los nuevos
+        $user->syncPermissions($allPermissions);
+
+        return response()->json(['message' => 'Permisos actualizados']);
+    }
     public function login(Request $request)
     {
         $request->validate([
