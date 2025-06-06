@@ -3,7 +3,8 @@
     <q-table :rows="contratistas" :columns="contratistaColums" :filter="search" :rows-per-page-options="[0]" dense wrap-cells>
       <template v-slot:top-right>
         <q-toolbar>
-          <q-btn v-if="store.permissions.includes('contratista create')" flat icon="add_circle_outline" @click="showAddUserDialog = true;contratistaCrear=true" />
+          <q-btn v-if="store.permissions.includes('contratista create')" icon="add_circle_outline" @click="showAddUserDialog = true;contratistaCrear=true"
+            label="Agregar Contratista" color="green" class="q-mr-sm" dense no-caps/>
           <q-input v-model="search"  outlined  dense placeholder="Buscar..." />
         </q-toolbar>
       </template>
@@ -15,8 +16,25 @@
       <template v-slot:body-cell-option="props">
         <q-td :props="props" auto-width >
           <q-btn-group flat>
-            <q-btn v-if="store.permissions.includes('contratista update')" flat dense icon="o_edit" @click="contratistaEdit(props.row)" size="10px"/>
-            <q-btn v-if="store.permissions.includes('contratista delete')" flat dense icon="o_delete" @click="contratistaDelete(props.row)" size="10px"/>
+<!--            <q-btn v-if="store.permissions.includes('contratista update')" flat dense icon="o_edit" @click="contratistaEdit(props.row)" size="10px"/>-->
+<!--            <q-btn v-if="store.permissions.includes('contratista delete')" flat dense icon="o_delete" @click="contratistaDelete(props.row)" size="10px"/>-->
+            <q-btn-dropdown label="Opciones" color="primary" text-color="white" no-caps size="xs" dense>
+              <q-list>
+                <q-item v-if="store.permissions.includes('contratista update')" clickable @click="contratistaEdit(props.row)" v-close-popup>
+                  <q-item-section avatar>
+                    <q-icon name="edit" />
+                  </q-item-section>
+                  <q-item-section>Editar</q-item-section>
+                </q-item>
+                <q-item v-if="store.permissions.includes('contratista delete')" clickable @click="contratistaDelete(props.row)" v-close-popup>
+                  <q-item-section avatar>
+                    <q-icon name="delete" />
+                  </q-item-section>
+                  <q-item-section>Eliminar</q-item-section>
+                </q-item>
+              </q-list>
+
+            </q-btn-dropdown>
           </q-btn-group>
         </q-td>
       </template>
@@ -29,7 +47,7 @@
         <q-card-section>
           <q-form @submit.prevent="contratistaCreate">
             <q-input v-model="contratista.nombre" hint="" required outlined label="Nombre" />
-<!--            <q-input v-model="contratista.telefono" hint="" required outlined label="Telefono" />-->
+            <q-input v-model="contratista.cuadrilla" hint="" required outlined label="Cuadrilla" />
             <q-input v-model="contratista.celular" hint="" required outlined label="Celular" />
             <q-input v-model="contratista.direccion" hint="" required outlined label="Direccion" />
             <q-input v-model="contratista.ci" hint="" required outlined label="CI" />
@@ -46,7 +64,7 @@
         <q-card-section>
           <q-form @submit.prevent="contratistaUpdate">
             <q-input v-model="contratista.nombre" hint="" required outlined label="Nombre" />
-<!--            <q-input v-model="contratista.telefono" hint="" required outlined label="Telefono" />-->
+            <q-input v-model="contratista.cuadrilla" hint="" required outlined label="Cuadrilla" />
             <q-input v-model="contratista.celular" hint="" required outlined label="Celular" />
             <q-input v-model="contratista.direccion" hint="" required outlined label="Direccion" />
             <q-input v-model="contratista.ci" hint="" required outlined label="CI" />
@@ -86,7 +104,7 @@ export default {
         {name: 'estado', field: 'estado', label: 'Estado', align: 'left', sortable: true},
         {name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true},
         {name: 'nombre', label: 'Nombre', field: 'nombre', align: 'left', sortable: true},
-        {name: 'telefono', label: 'Telefono', field: 'telefono', align: 'left', sortable: true},
+        {name: 'cuadrilla', label: 'Cuadrilla', field: 'cuadrilla', align: 'left', sortable: true},
         {name: 'celular', label: 'Celular', field: 'celular', align: 'left', sortable: true},
         {name: 'direccion', label: 'Direccion', field: 'direccion', align: 'left', sortable: true},
         {name: 'ci', label: 'CI', field: 'ci', align: 'left', sortable: true},
@@ -164,7 +182,7 @@ export default {
       }
     },
     contratistaEdit(contratista){
-      this.contratista = contratista
+      this.contratista = {...contratista}
       this.contratistaCrear = false
       this.showUpdateUserDialog = true
     },

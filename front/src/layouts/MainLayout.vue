@@ -92,11 +92,14 @@
           <div class="row">
             <div class="col-3 flex flex-center">
               <!--              <q-avatar size="48px">-->
-              <q-icon color="primary" size="48px" name="o_schema"/>
+<!--              <q-icon color="primary" size="48px" name="o_schema"/>-->
               <!--              </q-avatar>-->
+              <q-avatar size="35px">
+                <q-img src="logo.png" alt="Logo" />
+              </q-avatar>
             </div>
             <div class="col-9">
-              <div class="text-h6 text-bold "> {{ store.user.name }}</div>
+              <div class="text-h6 text-bold "> {{ store.user.username }}</div>
               <div class="text-caption">
                 <b>Bienvenido</b>
                 <!--                <q-badge :label="store.user.role" />-->

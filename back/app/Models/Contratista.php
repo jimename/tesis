@@ -17,5 +17,6 @@ class Contratista extends Model
         'fechaSocio',
         'estado',
         'user_id',
+        'cuadrilla'
     ];
 }
