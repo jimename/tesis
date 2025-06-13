@@ -104,6 +104,12 @@ class TornaguiaController extends Controller{
         // Crear la tornaguía
         $tornaguia = Tornaguia::create($request->all());
 
+        $transporte = $tornaguia->transporte;
+        if ($transporte) {
+            $transporte->libre = 'Ocupado';
+            $transporte->save();
+        }
+
         // Devolver con relaciones cargadas
         return Tornaguia::with([
             'transporte',
@@ -116,6 +122,14 @@ class TornaguiaController extends Controller{
 
     public function update(Request $request,$id){
         $tornaguia = Tornaguia::findOrFail($id);
+
+        if ($tornaguia->recibido == 'Pendiente' && $request->recibido == 'Aprobado') {
+            $transporte = $tornaguia->transporte;
+            if ($transporte) {
+                $transporte->libre = 'Activo';
+                $transporte->save();
+            }
+        }
         $tornaguia->update($request->all());
         return $tornaguia;
     }

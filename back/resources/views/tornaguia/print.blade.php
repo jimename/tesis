@@ -78,21 +78,21 @@
         <td colspan="3"><strong>Cuadrilla:</strong> {{ $tg->cuadrilla }}</td>
     </tr>
     <tr>
-        <td><strong>Medio de transporte:</strong> {{ $tg->transporte->tipo }}</td>
-        <td><strong>Marca:</strong> {{ $tg->transporte->marca }}</td>
-        <td><strong>Color:</strong> {{ $tg->transporte->color }}</td>
-        <td><strong>Placa:</strong> {{ $tg->transporte->placa }}</td>
+        <td><strong>Medio de transporte:</strong> {{ $tg->transporte->tipo ?? '' }}</td>
+        <td><strong>Marca:</strong> {{ $tg->transporte->marca ?? '' }}</td>
+        <td><strong>Color:</strong> {{ $tg->transporte->color ?? '' }}</td>
+        <td><strong>Placa:</strong> {{ $tg->transporte->placa ?? '' }}</td>
     </tr>
     <tr>
-        <td><strong>Nombre del Chofer:</strong> {{ $tg->driver->name }}</td>
-        <td><strong>C.I.:</strong> {{ $tg->driver->licencia }}</td>
-        <td colspan="2"><strong>Lic. Conducir:</strong> {{ $tg->driver->licencia }}</td>
+        <td><strong>Nombre del Chofer:</strong> {{ $tg->driver->name ?? '' }}</td>
+        <td><strong>C.I.:</strong> {{ $tg->driver->licencia ?? '' }}</td>
+        <td colspan="2"><strong>Lic. Conducir:</strong> {{ $tg->driver->licencia ?? '' }}</td>
     </tr>
     <tr>
-        <td><strong>Cooperativa Minera:</strong> {{ $tg->empresa->nombre }}</td>
-        <td><strong>NIT:</strong> {{ $tg->nit }}</td>
-        <td><strong>Comprador:</strong> {{ $tg->comprador }}</td>
-        <td><strong>Destino:</strong> {{ $tg->destino }}</td>
+        <td><strong>Cooperativa Minera:</strong> {{ $tg->empresa->nombre ?? '' }}</td>
+        <td><strong>NIT:</strong> {{ $tg->nit ?? '' }}</td>
+        <td><strong>Comprador:</strong> {{ $tg->comprador ?? '' }}</td>
+        <td><strong>Destino:</strong> {{ $tg->destino ?? '' }}</td>
     </tr>
     <tr>
         <td><strong>Tipo de Mineral:</strong> {{ $tg->tipoMaterial }}</td>

@@ -15,5 +15,6 @@ class Transporte extends Model
         'color',
         'estado',
         'user_id',
+        'libre',
     ];
 }
