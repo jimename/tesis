@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\TornaguiaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -57,4 +58,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('datos', [\App\Http\Controllers\DatosController::class,'datos']);
 //    tornaguiasGet
     Route::get('tornaguiasGet', [\App\Http\Controllers\TornaguiaController::class,'tornaguiasGet']);
+});
+Route::prefix('reportes')->controller(ReporteController::class)->group(function () {
+    Route::get('minerales-asociado', 'mineralesPorAsociado');
+    Route::get('tornaguias-emitidas', 'tornaguiasEmitidas');
+    Route::get('almacenamiento-tratamiento', 'almacenamientoTratamiento');
+    Route::get('entregas-comercializadoras', 'entregasComercializadoras');
+    Route::get('vehiculos-choferes', 'vehiculosChoferes');
+    Route::get('produccion-mensual', 'produccionMensual');
+    Route::get('control-documental', 'controlDocumental');
+    Route::get('consolidado-direccion', 'consolidadoDireccion');
 });
