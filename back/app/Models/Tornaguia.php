@@ -34,6 +34,12 @@ class Tornaguia extends Model
         'contratista_id',
         'user_id',
         'driver_id',
+        'tipo',
+        'observacionAdministrativo',
+        'estadoAdministrativo',
+        'observacionVigilancia',
+        'aprobado',
+        'recibido',
     ];
     public function transporte(){ return $this->belongsTo(Transporte::class); }
     public function empresa(){ return $this->belongsTo(Empresa::class); }

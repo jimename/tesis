@@ -34,6 +34,12 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('driver_id')->nullable();
             $table->foreign('driver_id')->references('id')->on('drivers');
+            $table->string('tipo')->nullable()->comment('Administrativo, Vigilancia');
+            $table->string('observacionAdministrativo')->nullable();
+            $table->string('estadoAdministrativo')->nullable();
+            $table->string('observacionVigilancia')->nullable();
+            $table->string('aprobado')->nullable()->comment('Aprobado por el administrador')->default('Pendiente');
+            $table->string('recibido')->nullable()->default('Pendiente');
             $table->timestamps();
         });
     }
