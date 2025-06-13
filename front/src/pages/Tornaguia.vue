@@ -64,32 +64,63 @@
           <div class="text-h6">{{ tornaguiaCrear ? 'Generación de' : 'Modificar' }} Tornaguia o Cartaporte</div>
         </q-card-section>
 
-        <q-card-section class="q-pa-xs">
+        <q-card-section class="q-pa-sm">
           <q-form @submit.prevent="submitForm">
             <div class="row q-col-gutter-sm">
-              <div class="col-6 col-md-2" v-for="(field, index) in formFields" :key="index">
-                <component :is="field.type" v-model="tornaguia[field.model]" v-bind="field.props" />
+              <div class="col-12 col-md-2">
+                <q-input v-model="tornaguia.fecha" type="date" label="Fecha" outlined dense/>
+              </div>
+              <div class="col-12 col-md-2">
+                <q-input v-model="tornaguia.numero" label="Número" outlined dense/>
+              </div>
+              <div class="col-12 col-md-2">
+                <q-input v-model="tornaguia.hora" type="time" label="Hora" outlined dense/>
+              </div>
+              <div class="col-12 col-md-3">
+                <q-select v-model="tornaguia.empresa_id" :options="empresas" option-label="label" option-value="value" map-options emit-value label="Empresa Destino" outlined dense/>
+              </div>
+              <div class="col-12 col-md-3">
+                <q-select v-model="tornaguia.contratista_id" :options="contratistas" option-label="label" option-value="value" map-options emit-value label="Contratista" outlined dense/>
+              </div>
+              <div class="col-12 col-md-3">
+                <q-input v-model="tornaguia.yacimiento" label="Yacimiento" outlined dense/>
+              </div>
+              <div class="col-12 col-md-3">
+                <q-input v-model="tornaguia.trancaSalida" label="Tranca Salida" outlined dense/>
+              </div>
+              <div class="col-12 col-md-3">
+                <q-input v-model="tornaguia.cuadrilla" label="Cuadrilla" outlined dense/>
+              </div>
+              <div class="col-12 col-md-3">
+                <q-select v-model="tornaguia.transporte_id" :options="transportes" option-label="label" option-value="value" map-options emit-value label="Transporte" outlined dense/>
+              </div>
+              <div class="col-12 col-md-3">
+                <q-select v-model="tornaguia.driver_id" :options="drivers" option-label="label" option-value="value" map-options emit-value label="Conductor" outlined dense/>
               </div>
 
               <!-- Tipo de Material -->
-              <div class="col-12 col-md-3">
+              <div class="col-12 row items-center q-gutter-sm">
                 <q-radio v-model="tornaguia.tipoMaterial" val="Mineral" label="Mineral"/>
                 <q-radio v-model="tornaguia.tipoMaterial" val="Embolsado" label="Embolsado"/>
               </div>
 
               <!-- Minerales -->
-              <div class="col-12 col-md-3">
-                <q-checkbox v-for="mineral in ['Sn', 'Ag', 'Pb', 'Zn', 'Otros']" :key="mineral"
-                            v-model="tornaguia.mineralesSel" :val="mineral" :label="mineral"/>
+              <div class="col-12 row items-center q-gutter-sm">
+                <q-checkbox v-for="mineral in ['Sn', 'Ag', 'Pb', 'Zn', 'Otros']" :key="mineral" v-model="tornaguia.mineralesSel" :val="mineral" :label="mineral"/>
               </div>
 
               <!-- Condicionales -->
               <div class="col-12 col-md-3" v-if="tornaguia.tipoMaterial === 'Mineral'">
                 <q-input v-model="tornaguia.peso" type="number" label="Peso (Toneladas)" outlined dense/>
               </div>
-
               <div class="col-12 col-md-3" v-if="tornaguia.tipoMaterial === 'Embolsado'">
                 <q-input v-model="tornaguia.sacos" type="number" label="Cantidad de Sacos" outlined dense/>
+              </div>
+              <div class="col-12 col-md-3">
+                <q-input v-model="tornaguia.lote" label="N° de Lote" outlined dense/>
+              </div>
+              <div class="col-12 col-md-3">
+                <q-input v-model="tornaguia.broza" label="Broza" outlined dense/>
               </div>
             </div>
 
@@ -106,6 +137,7 @@
     <div id="myelement" class="hidden"></div>
   </q-page>
 </template>
+
 <script>
 import {date} from "quasar";
 import {useCounterStore} from "stores/example-store";
