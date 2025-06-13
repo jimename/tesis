@@ -72,66 +72,101 @@
       <q-card>
         <q-card-section class="row items-center q-pb-none">
           <div class="text-h6">{{ tornaguiaCrear ? 'Generación de' : 'Modificar' }} Tornaguia o Cartaporte</div>
+          <q-space/>
+          <q-btn icon="close" flat dense round @click="showAddTornaguiaDialog = false" v-close-popup/>
         </q-card-section>
 
         <q-card-section class="q-pa-sm">
           <q-form @submit.prevent="submitForm">
             <div class="row q-col-gutter-sm">
               <div class="col-12 col-md-2">
-                <q-input v-model="tornaguia.fecha" type="date" label="Fecha" outlined dense/>
+                <q-input v-model="tornaguia.fecha" type="date" label="Fecha" outlined dense :disable="role !== 'Consejo vigilancia'"/>
               </div>
               <div class="col-12 col-md-2">
-<!--                numero habilitado para el role de consejo de vigilancia-->
-                <q-input v-model="tornaguia.numero" label="Número" outlined dense :disabled="role !== 'Consejo vigilancia'"/>
+                <q-input v-model="tornaguia.numero" label="Número" outlined dense :disable="role !== 'Consejo vigilancia'"/>
               </div>
               <div class="col-12 col-md-2">
-                <q-input v-model="tornaguia.hora" type="time" label="Hora" outlined dense/>
+                <q-input v-model="tornaguia.hora" type="time" label="Hora" outlined dense :disable="role !== 'Consejo vigilancia'"/>
               </div>
               <div class="col-12 col-md-3">
-                <q-select v-model="tornaguia.empresa_id" :options="empresas" option-label="label" option-value="value" map-options emit-value label="Empresa Destino" outlined dense/>
+                <q-select v-model="tornaguia.empresa_id" :options="empresas" option-label="label" option-value="value" map-options emit-value label="Empresa Destino" outlined dense :disable="role !== 'Secretariaria'"/>
               </div>
               <div class="col-12 col-md-3">
-                <q-select v-model="tornaguia.contratista_id" :options="contratistas" option-label="label" option-value="value" map-options emit-value label="Contratista" outlined dense/>
+                <q-select v-model="tornaguia.contratista_id" :options="contratistas" option-label="label" option-value="value" map-options emit-value label="Contratista" outlined dense :disable="role !== 'Consejo administrativo'"/>
               </div>
               <div class="col-12 col-md-3">
-                <q-input v-model="tornaguia.yacimiento" label="Yacimiento" outlined dense/>
+                <q-input v-model="tornaguia.yacimiento" label="Yacimiento" outlined dense :disable="role !== 'Secretariaria'"/>
               </div>
               <div class="col-12 col-md-3">
-                <q-input v-model="tornaguia.trancaSalida" label="Tranca Salida" outlined dense/>
+                <q-input v-model="tornaguia.trancaSalida" label="Tranca Salida" outlined dense :disable="role !== 'Consejo administrativo'"/>
               </div>
               <div class="col-12 col-md-3">
                 <q-input v-model="tornaguia.cuadrilla" label="Cuadrilla" outlined dense/>
               </div>
               <div class="col-12 col-md-3">
-                <q-select v-model="tornaguia.transporte_id" :options="transportes" option-label="label" option-value="value" map-options emit-value label="Transporte" outlined dense/>
+                <q-select v-model="tornaguia.transporte_id" :options="transportes" option-label="label" option-value="value" map-options emit-value label="Transporte" outlined dense :disable="role !== 'Consejo vigilancia'"/>
               </div>
               <div class="col-12 col-md-3">
-                <q-select v-model="tornaguia.driver_id" :options="drivers" option-label="label" option-value="value" map-options emit-value label="Conductor" outlined dense/>
+                <q-select v-model="tornaguia.driver_id" :options="drivers" option-label="label" option-value="value" map-options emit-value label="Conductor" outlined dense :disable="role !== 'Consejo vigilancia'"/>
               </div>
-
+<!--              nit-->
+              <div class="col-12 col-md-3">
+                <q-input v-model="tornaguia.nit" label="NIT" outlined dense :disable="role !== 'Consejo administrativo'"/>
+              </div>
+<!--              comprador-->
+              <div class="col-12 col-md-3">
+                <q-input v-model="tornaguia.comprador" label="Comprador" outlined dense :disable="role !== 'Secretariaria'"/>
+              </div>
+<!--              departamento-->
+              <div class="col-12 col-md-3">
+                <q-select v-model="tornaguia.departamento" :options="['Oruro', 'Potosí', 'La Paz', 'Cochabamba', 'Chuquisaca', 'Tarija', 'Santa Cruz', 'Beni', 'Pando']" label="Departamento" outlined dense :disable="role !== 'Secretariaria'"/>
+              </div>
+<!--              centro minero-->
+              <div class="col-12 col-md-3">
+                <q-input v-model="tornaguia.centroMinero" label="Centro Minero" outlined dense :disable="role !== 'Secretariaria'"/>
+              </div>
               <!-- Tipo de Material -->
               <div class="col-12 row items-center q-gutter-sm">
-                <q-radio v-model="tornaguia.tipoMaterial" val="Mineral" label="Mineral"/>
-                <q-radio v-model="tornaguia.tipoMaterial" val="Embolsado" label="Embolsado"/>
+                <q-radio v-model="tornaguia.tipoMaterial" val="Mineral" label="Mineral" :disable="role !== 'Consejo vigilancia'"/>
+                <q-radio v-model="tornaguia.tipoMaterial" val="Embolsado" label="Embolsado" :disable="role !== 'Consejo vigilancia'"/>
               </div>
 
               <!-- Minerales -->
               <div class="col-12 row items-center q-gutter-sm">
-                <q-checkbox v-for="mineral in ['Sn', 'Ag', 'Pb', 'Zn', 'Otros']" :key="mineral" v-model="tornaguia.mineralesSel" :val="mineral" :label="mineral"/>
+                <q-checkbox v-for="mineral in ['Sn', 'Ag', 'Pb', 'Zn', 'Otros']" :key="mineral" v-model="tornaguia.mineralesSel" :val="mineral" :label="mineral" :disable="role !== 'Consejo vigilancia'"/>
               </div>
 
               <!-- Condicionales -->
               <div class="col-12 col-md-3" v-if="tornaguia.tipoMaterial === 'Mineral'">
-                <q-input v-model="tornaguia.peso" type="number" label="Peso (Toneladas)" outlined dense/>
+                <q-input v-model="tornaguia.peso" type="number" label="Peso (Toneladas)" outlined dense :disable="role !== 'Consejo vigilancia'"/>
               </div>
               <div class="col-12 col-md-3" v-if="tornaguia.tipoMaterial === 'Embolsado'">
-                <q-input v-model="tornaguia.sacos" type="number" label="Cantidad de Sacos" outlined dense/>
+                <q-input v-model="tornaguia.sacos" type="number" label="Cantidad de Sacos" outlined dense :disable="role !== 'Consejo vigilancia'"/>
               </div>
               <div class="col-12 col-md-3">
-                <q-input v-model="tornaguia.lote" label="N° de Lote" outlined dense/>
+                <q-input v-model="tornaguia.lote" label="N° de Lote" outlined dense :disable="role !== 'Consejo vigilancia'"/>
               </div>
               <div class="col-12 col-md-3">
-                <q-input v-model="tornaguia.broza" label="Broza" outlined dense/>
+                <q-input v-model="tornaguia.broza" label="Broza" outlined dense :disable="role !== 'Consejo vigilancia'"/>
+              </div>
+              <div class="col-12 row items-center q-gutter-sm">
+                <q-radio v-model="tornaguia.tipo" val="Comercializacion" label="Comercializacion" :disable="role !== 'Consejo administrativo'"/>
+                <q-radio v-model="tornaguia.tipo" val="Tratammiento" label="Tratammiento" :disable="role !== 'Consejo administrativo'"/>
+              </div>
+              <div class="col-12 col-md-4" v-if="tornaguia.tipo === 'Comercializacion'">
+                <q-input v-model="tornaguia.observacionAdministrativo" label="Observación Administrativo" outlined dense :disable="role !== 'Consejo administrativo'"/>
+              </div>
+              <div class="col-12 col-md-4" v-if="tornaguia.tipo === 'Comercializacion'">
+                <q-checkbox v-model="tornaguia.estadoAdministrativo" label="Estado Administrativo" false-value="Pendiente" true-value="Aprobado" :disable="role !== 'Consejo administrativo'"/>
+              </div>
+              <div class="col-12 col-md-4" v-if="tornaguia.tipo === 'Tratammiento'">
+                <q-input v-model="tornaguia.observacionVigilancia" label="Observación Vigilancia" outlined dense :disable="role !== 'Consejo administrativo'"/>
+              </div>
+              <div class="col-12">
+                <q-checkbox v-model="tornaguia.aprobado" label="Estado aprobado" false-value="Pendiente" true-value="Aprobado" :disable="role !== 'Gerente'"/>
+              </div>
+              <div class="col-12">
+                <q-checkbox v-model="tornaguia.recibido" label="Estado recibido" false-value="Pendiente" true-value="Aprobado" :disable="role !== 'Secretariaria'"/>
               </div>
             </div>
 
@@ -233,7 +268,7 @@ export default {
         hora: date.formatDate(new Date(), 'HH:mm'),
         numero: '',
         departamento: 'Oruro',
-        centroMinero: 'Poopo',
+        centroMinero: 'San pablo',
         yacimiento: '',
         trancaSalida: '',
         transporte_id: null,
@@ -250,7 +285,14 @@ export default {
         peso: '',
         cantidad: '',
         lote: '',
-        user_id: this.store.user.id
+        user_id: this.store.user.id,
+        tipo: 'Comercializacion',
+        estadoAdministrativo: 'Pendiente',
+        observacionAdministrativo: '',
+        observacionVigilancia: '',
+        aprobado: 'Pendiente',
+        recibido: 'Pendiente',
+        minerales: '',
       }
       this.showAddTornaguiaDialog = true
       this.tornaguiaCrear = true
