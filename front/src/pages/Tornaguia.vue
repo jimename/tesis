@@ -6,6 +6,16 @@
         <div class="row q-col-gutter-sm">
           <div class="col-12 col-sm-4" v-if="store.permissions.includes('tornaguia read')">
             <q-input outlined dense type="date" v-model="fecha1" label="Fecha Desde" />
+<!--            <pre>-->
+<!--              {{$store.user.role}}-->
+<!--                    roles: [-->
+<!--        'Consejo vigilancia',-->
+<!--        'Consejo administrativo',-->
+<!--        'Secretariaria',-->
+<!--        'Gerente',-->
+<!--        'Administrador',-->
+<!--      ],-->
+<!--            </pre>-->
           </div>
           <div class="col-12 col-sm-4" v-if="store.permissions.includes('tornaguia read')">
             <q-input outlined dense type="date" v-model="fecha2" label="Fecha Hasta" />
@@ -71,7 +81,8 @@
                 <q-input v-model="tornaguia.fecha" type="date" label="Fecha" outlined dense/>
               </div>
               <div class="col-12 col-md-2">
-                <q-input v-model="tornaguia.numero" label="Número" outlined dense/>
+<!--                numero habilitado para el role de consejo de vigilancia-->
+                <q-input v-model="tornaguia.numero" label="Número" outlined dense :disabled="role !== 'Consejo vigilancia'"/>
               </div>
               <div class="col-12 col-md-2">
                 <q-input v-model="tornaguia.hora" type="time" label="Hora" outlined dense/>
@@ -193,6 +204,11 @@ export default {
       this.drivers = response.data.drivers.map(d => ({ label: d.name, value: d.id }))
     });
   },
+  computed: {
+    role() {
+      return this.$store.user.role
+    }
+  },
   methods: {
     submitForm() {
       if (this.tornaguiaCrear) this.tornaguiaCreate()
@@ -296,11 +312,11 @@ export default {
           {label: "minerales", value: "minerales"},
           {label: "peso", value: "peso"},
           {label: "sacos", value: "sacos"},
-          {label: "transporte", value: row => row.transporte.placa},
-          {label: "empresa", value: row => row.empresa.nombre},
-          {label: "contratista", value: row => row.contratista.nombre},
-          {label: "user", value: row => row.user.name},
-          {label: "conductor", value: row => row.driver.name},
+          {label: "transporte", value: row => row.transporte?.placa},
+          {label: "empresa", value: row => row.empresa?.nombre},
+          {label: "contratista", value: row => row.contratista?.nombre},
+          {label: "user", value: row => row.user?.name},
+          {label: "conductor", value: row => row.driver?.name},
         ],
         content: this.tornaguias,
       }]
@@ -321,13 +337,28 @@ export default {
     ver(tornaguia) {
       this.showAddTornaguiaDialog = true
       this.tornaguiaCrear = false
-      this.tornaguia = tornaguia
-      this.tornaguia.transportes = {label: tornaguia.transporte.placa, value: tornaguia.transporte.id}
-      this.tornaguia.empresas = {label: tornaguia.empresa.nombre, value: tornaguia.empresa.id}
-      this.tornaguia.contratistas = {label: tornaguia.contratista.nombre, value: tornaguia.contratista.id}
-      this.tornaguia.drivers = {label: tornaguia.driver.name, value: tornaguia.driver.id}
-      this.tornaguia.mineralesSel = tornaguia.minerales ? tornaguia.minerales.split(",") : []
-    },
+      this.tornaguia = { ...tornaguia }
+
+      this.tornaguia.transportes = tornaguia.transporte
+        ? { label: tornaguia.transporte.placa, value: tornaguia.transporte.id }
+        : null
+
+      this.tornaguia.empresas = tornaguia.empresa
+        ? { label: tornaguia.empresa.nombre, value: tornaguia.empresa.id }
+        : null
+
+      this.tornaguia.contratistas = tornaguia.contratista
+        ? { label: tornaguia.contratista.nombre, value: tornaguia.contratista.id }
+        : null
+
+      this.tornaguia.drivers = tornaguia.driver
+        ? { label: tornaguia.driver.name, value: tornaguia.driver.id }
+        : null
+
+      this.tornaguia.mineralesSel = tornaguia.minerales
+        ? tornaguia.minerales.split(",")
+        : []
+    }
   },
 }
 </script>
