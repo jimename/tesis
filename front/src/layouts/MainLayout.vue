@@ -181,6 +181,16 @@
                 Tornaguias
               </q-item-section>
             </q-item>
+<!--            reportes-->
+            <q-item
+              clickable exact to="reportes" active-class="bg-blue-grey-6 text-white">
+              <q-item-section avatar>
+                <q-icon name="o_insert_chart"/>
+              </q-item-section>
+              <q-item-section>
+                Reportes
+              </q-item-section>
+            </q-item>
           </q-list>
           <q-separator/>
         </q-list>

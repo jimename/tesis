@@ -19,7 +19,7 @@ const routes = [
       { path: 'tornaguia', component: Tornaguia ,meta:{requiresAuth: true}},
       { path: 'driver', component: Driver ,meta:{requiresAuth: true}},
       { path: 'user', component: User ,meta:{requiresAuth: true}},
-
+      { path: 'reportes', component: () => import('pages/reportes/Reporte.vue') ,meta:{requiresAuth: true}},
     ]
   },
   { path: '/show/:id', component:Show},
