@@ -12,6 +12,11 @@
           <q-badge dense text-color="white" :color="props.row.estado=='Activo'?'green':'red'">{{props.row.estado}}</q-badge>
         </q-td>
       </template>
+      <template v-slot:body-cell-libre="props">
+        <q-td :props="props" auto-width >
+          <q-badge dense text-color="white" :color="props.row.libre=='Activo'?'green':'red'">{{props.row.libre}}</q-badge>
+        </q-td>
+      </template>
       <template v-slot:body-cell-option="props">
         <q-td :props="props" auto-width >
           <q-btn-group flat>
@@ -48,8 +53,8 @@
             <q-input v-model="transporte.marca" hint="" required outlined label="Marca" />
             <q-input v-model="transporte.placa" hint="" required outlined label="Placa" />
             <q-input v-model="transporte.color" hint="" required outlined label="Color" />
-<!--            estado Activo Inactivo-->
             <q-select v-model="transporte.estado" :options="['Activo','Inactivo']" hint="" required outlined label="Estado" />
+            <q-select v-model="transporte.libre" :options="['Activo','Ocupado']" hint="" required outlined label="Libre" />
             <q-btn :loading="loading" type="submit" color="primary" icon="add_circle_outline" label="Guardar" class="full-width" />
           </q-form>
         </q-card-section>
@@ -82,6 +87,7 @@ export default {
       transporteColums:[
         {name: 'option', field: 'option', label: 'Opciones', align: 'left', sortable: true},
         {name: 'estado', field: 'estado', label: 'Estado', align: 'left', sortable: true},
+        {name: 'libre', label: 'Libre', field: 'libre', align: 'left', sortable: true},
         {name: 'id', label: 'ID', field: 'id', align: 'left', sortable: true},
         {name: 'tipo', label: 'Tipo', field: 'tipo', align: 'left', sortable: true},
         {name: 'marca', label: 'Marca', field: 'marca', align: 'left', sortable: true},
