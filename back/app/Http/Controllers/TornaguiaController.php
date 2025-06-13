@@ -30,16 +30,16 @@ class TornaguiaController extends Controller{
             ->get();
         return $tornaguias;
     }
-     public function tornaguiaSearch(Request $request){
-         return Tornaguia::where('fecha', '>=', $request->fechaDesde)
-             ->where('fecha', '<=', $request->fechaHasta)
-             ->with('transporte')
-             ->with('empresa')
-             ->with('contratista')
-             ->with('user')
-             ->with('driver')
-             ->orderBy('id','desc')
-             ->get();
+    public function tornaguiaSearch(Request $request)
+    {
+        $query = Tornaguia::with(['empresa', 'contratista', 'transporte', 'driver', 'user'])
+            ->whereBetween('fecha', [$request->fechaDesde, $request->fechaHasta]);
+
+        if ($request->has('aprobado') && $request->aprobado) {
+            $query->where('aprobado', $request->aprobado);
+        }
+
+        return $query->orderBy('fecha', 'desc')->get();
     }
     public function totales(){
         return response()->json([
