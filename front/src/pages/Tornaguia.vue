@@ -4,7 +4,7 @@
     <q-card class="q-mb-md">
       <q-card-section>
         <div class="row q-col-gutter-sm">
-          <div class="col-12 col-sm-4" v-if="store.permissions.includes('tornaguia read')">
+          <div class="col-12 col-sm-3" v-if="store.permissions.includes('tornaguia read')">
             <q-input outlined dense type="date" v-model="fecha1" label="Fecha Desde" />
 <!--            <pre>-->
 <!--              {{$store.user.role}}-->
@@ -17,10 +17,20 @@
 <!--      ],-->
 <!--            </pre>-->
           </div>
-          <div class="col-12 col-sm-4" v-if="store.permissions.includes('tornaguia read')">
+          <div class="col-12 col-sm-3" v-if="store.permissions.includes('tornaguia read')">
             <q-input outlined dense type="date" v-model="fecha2" label="Fecha Hasta" />
           </div>
-          <div class="col-12 col-sm-4 flex flex-center" v-if="store.permissions.includes('tornaguia read')">
+          <div class="col-12 col-sm-3">
+            <q-select
+              v-model="estadoAprobado"
+              :options="['Aprobado', 'Pendiente']"
+              label="Estado Aprobado"
+              outlined
+              dense
+              clearable
+            />
+          </div>
+          <div class="col-12 col-sm-3 flex flex-center" v-if="store.permissions.includes('tornaguia read')">
             <q-btn icon="search" color="primary" label="Buscar" @click="buscar" :loading="loading" />
           </div>
         </div>
@@ -41,6 +51,13 @@
         <q-td :props="props" auto-width>
           <q-badge dense text-color="white" :color="props.row.tipoMaterial === 'Embolsado' ? 'green' : 'red'">
             {{ props.row.tipoMaterial }}
+          </q-badge>
+        </q-td>
+      </template>
+      <template v-slot:body-cell-aprobado="props">
+        <q-td :props="props" auto-width>
+          <q-badge dense text-color="white" :color="props.row.aprobado === 'Aprobado' ? 'green' : 'red'">
+            {{ props.row.aprobado }}
           </q-badge>
         </q-td>
       </template>
@@ -208,11 +225,13 @@ export default {
       tornaguiaCrear: true,
       empresas: [],
       contratistas: [],
+      estadoAprobado: '',
       transportes: [],
       drivers: [],
       tornaguiaColums: [
         {name: 'option', field: 'option', label: 'Opciones', align: 'left', sortable: true},
         {name: 'numero', field: 'numero', label: 'No.', align: 'left', sortable: true},
+        {name: 'aprobado', label: 'Estado Aprobado', field: 'aprobado', align: 'left', sortable: true},
         {
           name: 'fecha',
           field: row => row.fecha + ' ' + (row.hora ? row.hora.substring(0, 5) : ''),
@@ -220,6 +239,7 @@ export default {
           align: 'left',
           sortable: true
         },
+        // estado
         {name: 'empresa', label: 'Empresa destino', field: row => row.empresa?.nombre, align: 'left', sortable: true},
         {name: 'contratista', label: 'Contratista', field: row => row.contratista?.nombre, align: 'left', sortable: true},
         {name: 'minerales', label: 'Minerales', field: 'minerales', align: 'left', sortable: true},
@@ -254,6 +274,7 @@ export default {
       this.$api.post('tornaguiaSearch', {
         fechaDesde: this.fecha1,
         fechaHasta: this.fecha2,
+        aprobado: this.estadoAprobado
       }).then(response => {
         this.tornaguias = response.data
         this.loading = false
